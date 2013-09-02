@@ -1,0 +1,154 @@
+@import "compass/css3"
+@import "./_helpers"
+
+
+@mixin cover_heights($full_height)
+    height: $full_height
+    &.cover-half
+        height: $full_height / 2
+    &.cover-twothirds
+        height: $full_height * 2 / 3
+
+
+%item
+    +box-sizing(border-box)
+    display: inline-block
+    vertical-align: top
+    .item_cover
+        +box-sizing(border-box)
+        +background-size(cover)
+        background-repeat: no-repeat
+        position: relative
+        background-position: center
+        &.item_cover-bg-top
+            background-position: top center
+        &.item_cover-bg-bottom
+            background-position: bottom center
+        .item_info
+            +box-sizing(border-box)
+            &.pinned-bottom-left
+                position: absolute
+                bottom: 0
+                left: 0
+            &.centered, &.centered-horizontal
+                text-align: center
+                margin: 0 auto
+
+.item_supertitle, .item_title, .item_subtitle, .item_deck
+    +box-sizing(border-box)
+    display: block
+    padding: 0.5em
+
+
+.item-small
+    @extend %item
+
+    $min_width: 200px
+    $max_width: 300px
+    min-width: $min_width
+
+    width: 25%
+    .item_cover
+        height: 200px
+    +respond-to-lt($min_width * 4)
+        width: 33%
+        .item_cover
+            +cover-heights(225px)
+    +respond-to-lt($min_width * 3)
+        width: 50%
+        .item_cover
+            +cover-heights(250px)
+    +respond-to-lt($min_width * 2)
+        width: 100%
+        .item_cover
+            +cover-heights(275px)
+
+
+.item-medium
+    @extend %item
+
+    $min_width: 300px
+    min-width: $min_width
+
+    width: 33%
+    +respond-to-lt($min_width * 4)
+        width: 50%
+    +respond-to-lt($min_width * 2)
+        width: 100%
+
+    .item_cover
+        +cover-heights(300px)
+        +respond-to-gt(700px)
+            +cover-heights(400px)
+        +respond-to-gt(1100px)
+            +cover-heights(600px)
+
+.item-large
+    @extend %item
+
+    $min_width: 600px
+    min-width: $min_width
+
+    width: 50%
+    +respond-to-lt($min_width * 2)
+        width: 100%
+
+    .item_cover
+        +cover-heights(400px)
+        +respond-to-gt(700px)
+            +cover-heights(600px)
+        +respond-to-gt(1100px)
+            +cover-heights(900px)
+
+.item-full
+    @extend %item
+    width: 100%
+
+    .item_cover
+        +cover-heights(600px)
+        +respond-to-gt(700px)
+            +cover-heights(800px)
+        +respond-to-gt(1100px)
+            +cover-heights(1000px)
+
+    .item_deck
+        max-width: 600px
+
+$known_size_min_width: 170px
+%item-known_size
+    @extend %item
+    min-width: $known_size_min_width
+    .item_cover
+        +cover-heights(250px)
+        +respond-to-gt(700px)
+            +cover-heights(400px)
+
+.item-fifth
+    @extend %item-known_size
+    width: 20%
+    +respond-to-lt($known_size_min_width * 5)
+        width: 100%
+
+.item-fourth, .item-quarter
+    @extend %item-known_size
+    width: 25%
+    +respond-to-lt($known_size_min_width * 4)
+        width: 100%
+
+.item-third
+    @extend %item-known_size
+    width: 33.333%
+    +respond-to-lt($known_size_min_width * 3)
+        width: 100%
+
+.item-half
+    @extend %item-known_size
+    width: 50%
+    +respond-to-lt($known_size_min_width * 2)
+        width: 100%
+
+
+//TODO: add item-right/item-left floats for sidebar-type uses
+
+// TODO: Make .item_cover etc a item_components.sass extension
+

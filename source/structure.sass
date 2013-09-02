@@ -1,0 +1,71 @@
+@import "compass/css3"
+@import "./_helpers"
+
+
+html, body
+    padding: 0
+    margin: 0
+
+
+$container_width: 1200px
+
+.container
+    max-width: $container_width
+    margin: 0 auto
+.container-full
+    margin: 0 auto
+
+
+$header_breakpoint: 600px
+
+
+.header
+    clear: both
+    &::after
+        content: ""
+        display: block
+        clear: both
+    nav
+        display: block
+        text-align: center
+
+.header-collapse
+    @extend .header
+    nav
+        +respond-to-lt(601px)
+            max-height: 0
+
+
+%logo
+    display: block
+    text-align: center
+
+.logo
+    @extend %logo
+
+.logo-left
+    @extend %logo
+    +respond-to-gt($header_breakpoint)
+        display: inline-block
+        float: left
+        text-align: left
+
+
+
+
+
+%nav
+    display: block
+    text-align: center
+    +respond-to-gt($header_breakpoint)
+        vertical-align: top
+        display: inline-block
+
+.nav-centered
+    @extend %nav
+
+.nav-right
+    @extend %nav
+    +respond-to-gt($header_breakpoint)
+        float: right
+        text-align: right
