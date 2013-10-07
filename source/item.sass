@@ -37,7 +37,6 @@
 .item_supertitle, .item_title, .item_subtitle, .item_deck
     +box-sizing(border-box)
     display: block
-    padding: 0.5em
 
 
 .item-small
@@ -111,6 +110,12 @@
         +respond-to-gt(1100px)
             +cover-heights(1000px)
 
+    &%item-floated_cover
+        .item_cover
+            +respond-to-gt(700px)
+                +cover-heights(400px)
+            +respond-to-gt(1100px)
+                +cover-heights(600px)
     .item_deck
         max-width: 600px
 
@@ -148,7 +153,36 @@ $known_size_min_width: 170px
         width: 100%
 
 
-//TODO: add item-right/item-left floats for sidebar-type uses
+%item-floated_cover
+    +respond-to-gt(700px)
+        .item_info
+            display: inline-block
+            width: 50%
+        .item_cover
+            width: 50%
+            &.item_cover-width_third
+                width: 33.333%
+            &.item_cover-width_fourth
+                width: 25%
+            .item_info
+                display: block
+
+.item-left_cover
+    @extend %item-floated_cover
+    +respond-to-gt(700px)
+        .item_cover
+            float: left
+
+.item-right_cover
+    @extend %item-floated_cover
+    +respond-to-gt(700px)
+        .item_cover
+            float: right
+
+
+
+
+
 
 // TODO: Make .item_cover etc a item_components.sass extension
 
