@@ -1,0 +1,196 @@
+@import "compass/css3"
+@import "./_helpers"
+
+
+// TODO: move to config?
+$Formwork_generate_selectors    : true !default
+$ItemCover--intrinsic_ratio     : 16/9 !default
+$Item--min_width                : 170px !default
+
+
+// Item class
+
+%Item
+    +box-sizing(border-box)
+    display         : inline-block
+    vertical-align  : top
+    width           : 100%
+
+    // Build out the placeholder selectors for the known-size Item variants.
+    @each $size in ( fifth 5, fourth 4, third 3, half 2 )
+        $name : nth($size, 1)
+        $val  : nth($size, 2)
+        &._#{ $name }
+            +respond-to-gt($Item_min_width * $val)
+                width: percentage(1 / $val)
+
+
+
+@each $selector in ("", Cover, Info, Supertitle, Title, Subtitle, Deck)
+    .Item#{ $selector }
+        @extend %Item#{ $selector }
+
+
+
+%Item
+
+    $min_width: 200px
+
+    &.-small
+        min-width: 200px
+
+        $min_width: 200px
+
+        %ItemCover
+            height: 275px
+            &.-height--half
+                height: 275px * (1 / 2)
+            &.-height--twothirds
+                height: 275px * (2 / 3)
+
+        $max_division: 3
+
+        +respond-to-gt($min_width * (2 + 1))
+            // 100 / n
+            width: 50%
+
+            %ItemCover
+                height: 250px
+                &.-height--half
+                    height: 250px * (1 / 2)
+                &.-height--twothirds
+                    height: 250px * (2 / 3)
+
+        +respond-to-gt($min_width * (3 + 1))
+            width: 33.33333%
+
+            %ItemCover
+                height: 225px
+                &.-height--half
+                    height: 225px * (1 / 2)
+                &.-height--twothirds
+                    height: 225px * (2 / 3)
+
+        +respond-to-gt($min_width * (4 + 1))
+            width: 25%
+
+            %ItemCover
+                height: 200px
+                &.-height--half
+                    height: 200px * (1 / 2)
+                &.-height--twothirds
+                    height: 200px * (2 / 3)
+
+
+    &.-medium
+        min-width: 300px
+        $min_width: 300px
+
+        %ItemCover
+            height: 275px
+            &.-height--half
+                height: 275px * (1 / 2)
+            &.-height--twothirds
+                height: 275px * (2 / 3)
+
+        +respond-to-gt($min_width * (2 + 1))
+            // 100 / n
+            width: 50%
+
+            %ItemCover
+                height: 400px
+                &.-height--half
+                    height: 400px * (1 / 2)
+                &.-height--twothirds
+                    height: 400px * (2 / 3)
+
+        +respond-to-gt($min_width * (3 + 1))
+            width: 33.33333%
+
+            %ItemCover
+                height: 600px
+                &.-height--half
+                    height: 600px * (1 / 2)
+                &.-height--twothirds
+                    height: 600px * (2 / 3)
+
+
+    &.-large
+        min-width: 400px
+        $min_width: 400px
+
+        %ItemCover
+            height: 400px
+            &.-height--half
+                height: 400px * (1 / 2)
+            &.-height--twothirds
+                height: 400px * (2 / 3)
+
+        +respond-to-gt($min_width * (2 + 1))
+            // 100 / n
+            width: 50%
+
+            %ItemCover
+                height: 600px
+                &.-height--half
+                    height: 600px * (1 / 2)
+                &.-height--twothirds
+                    height: 600px * (2 / 3)
+
+    .H-intrinsic_ratio
+        position: relative
+        height: 0
+        padding-bottom: percentage(1 / $ItemCover_intrinsic_ratio)
+        %ItemCover
+            position: absolute
+            top: 0
+            left: 0
+            width: 100%
+            height: 100%
+
+
+
+%_ItemComponent
+    +box-sizing(border-box)
+
+
+%ItemCover
+    @extend %_ItemComponent
+    +background-size(cover)
+    background-repeat   : no-repeat
+    position            : relative
+    background-position : center
+
+    &.-image_align--top
+        background-position: top center
+
+    &.-image_align--bottom
+        background-position: bottom center
+
+// General grouping element.
+%ItemInfo
+    @extend %_ItemComponent
+
+    &.-pinned--bottom_left
+        position    : absolute
+        bottom      : 0
+        left        : 0
+
+    &.-centered--horizontal
+        text-align  : center
+        margin      : 0 auto
+
+%ItemSupertitle
+    @extend %_ItemComponent
+
+%ItemTitle
+    @extend %_ItemComponent
+
+%ItemSubtitle
+    @extend %_ItemComponent
+
+%ItemDeck
+    @extend %_ItemComponent
+
+
+
