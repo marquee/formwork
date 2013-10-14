@@ -3,7 +3,7 @@
 
 
 // TODO: move to config?
-$Formwork_generate_selectors    : true !default
+$Formwork--generate_selectors   : true !default
 $ItemCover--intrinsic_ratio     : 16/9 !default
 $Item--min_width                : 170px !default
 
@@ -21,14 +21,8 @@ $Item--min_width                : 170px !default
         $name : nth($size, 1)
         $val  : nth($size, 2)
         &._#{ $name }
-            +respond-to-gt($Item_min_width * $val)
+            +respond-to-gt($Item--min_width * $val)
                 width: percentage(1 / $val)
-
-
-
-@each $selector in ("", Cover, Info, Supertitle, Title, Subtitle, Deck)
-    .Item#{ $selector }
-        @extend %Item#{ $selector }
 
 
 
@@ -140,7 +134,7 @@ $Item--min_width                : 170px !default
     .H-intrinsic_ratio
         position: relative
         height: 0
-        padding-bottom: percentage(1 / $ItemCover_intrinsic_ratio)
+        padding-bottom: percentage(1 / $ItemCover--intrinsic_ratio)
         %ItemCover
             position: absolute
             top: 0
@@ -193,4 +187,7 @@ $Item--min_width                : 170px !default
     @extend %_ItemComponent
 
 
-
+@if $Formwork--generate_selectors
+    @each $selector in ("", Cover, Info, Supertitle, Title, Subtitle, Deck)
+        .Item#{ $selector }
+            @extend %Item#{ $selector }
