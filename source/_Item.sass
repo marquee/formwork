@@ -1,193 +1,229 @@
 @import "compass/css3"
-@import "./_helpers"
+
+@import "./default_config"
+@import "./helpers"
+
+@import "./shiny"
 
 
-// TODO: move to config?
-$Formwork--generate_selectors   : true !default
-$ItemCover--intrinsic_ratio     : 16/9 !default
-$Item--min_width                : 170px !default
 
-
-// Item class
-
+// Item module
+//
+// Assumes a markup structure similar to this. The actual components MAY be
+// regrouped as desired, though SHOULD be in the same relative order.
+//
+// ```html
+// <div class="Item -intrinsic_ratio">
+//     <div class="ItemCoverWrapper">
+//         <div class="ItemCover" style="background-image: url(http://placepuppy.it/800/600/">
+//             <div class="ItemInfo -centered--horizontal">
+//                 <div class="ItemSupertitle">Supertitle</div>
+//                 <h1 class="ItemTitle"></h1>
+//             </div>
+//         </div>
+//     </div>
+//     <div class="ItemInfo">
+//         <div class="ItemSubtitle">Subtitle</div>
+//         <p class="ItemDeck">
+//             Nulla vitae elit libero, a pharetra augue. Morbi leo risus, porta
+//             ac consectetur ac, vestibulum at eros. Cras justo odio, dapibus ac
+//             facilisis in, egestas eget quam.
+//         </p>
+//     </div>
+// </div>
+// ```
 %Item
     +box-sizing(border-box)
     display         : inline-block
     vertical-align  : top
     width           : 100%
 
-    // Build out the placeholder selectors for the known-size Item variants.
-    @each $size in ( fifth 5, fourth 4, third 3, half 2 )
-        $name : nth($size, 1)
-        $val  : nth($size, 2)
-        &._#{ $name }
+    // Build out the placeholder selectors for the known-number Item variants.
+    // These items will stay the given percentage of the available width until
+    // they reach the minimum width specified by `$Item--min_width` at which
+    // point they will stack, one per row.
+    @each $size_set in (fifth 5, fourth 4, third 3, half 2)
+        $name: nth($size_set, 1)
+        $val: nth($size_set, 2)
+        &%-size--#{ $name }
             +respond-to-gt($Item--min_width * $val)
                 width: percentage(1 / $val)
 
+                %ItemCover
+                    height: $ItemCover--default_height / $val
+                    &%-height--half
+                        height: $ItemCover--default_height / $val * (1 / 2)
+                    &%-height--twothirds
+                        height: $ItemCover--default_height / $val * (2 / 3)
 
+    // Build out the placeholder selectors for the more flexible variants.
+    // The covers get variants to control their height as well,
+    // `-height--half` and `-height--twothirds` that, as named, set the height
+    // to be 1/2 or 2/3 of the normal height.
+    @each $size_set in $Item--variable_sizes
+        $name           : nth($size_set, 1)
+        $levels         : nth($size_set, 2)
+        $min_width      : nth($size_set, 3)
+        $height_lower   : nth($size_set, 4)
+        $height_upper   : nth($size_set, 5)
 
-%Item
+        &%-size--#{ $name }
+            min-width: $min_width
 
-    $min_width: 200px
+            %ItemCover
+                height: $height_lower
+                &%-height--half
+                    height: $height_lower * (1 / 2)
+                &%-height--twothirds
+                    height: $height_lower * (2 / 3)
 
-    &.-small
-        min-width: 200px
+            @for $level from 2 through $levels
+                +respond-to-gt($min_width * ($level + 1))
+                    width: 100% / $level
 
-        $min_width: 200px
+                    $this_height: $height_lower + ($height_upper - $height_lower) / ($levels - 1)
+                    %ItemCover
+                        height: $this_height
+                        &%-height--half
+                            height: $this_height * (1 / 2)
+                        &%-height--twothirds
+                            height: $this_height * (2 / 3)
 
+    // Variant that uses the intrinsic ratio technique to keep the dimensions
+    // of the ItemCover a consistent ratio, specified by the
+    // `$ItemCover--intrinsic_ratio` setting. Requires use of an
+    // `%ItemCoverWrapper` element around the `%ItemCover`.
+    // 
+    // http://alistapart.com/article/creating-intrinsic-ratios-for-video
+    &%-intrinsic_ratio
+        %ItemCoverWrapper
+            position        : relative
+            height          : 0
+            padding-bottom  : percentage(1 / $ItemCover--intrinsic_ratio)
         %ItemCover
-            height: 275px
-            &.-height--half
-                height: 275px * (1 / 2)
-            &.-height--twothirds
-                height: 275px * (2 / 3)
-
-        $max_division: 3
-
-        +respond-to-gt($min_width * (2 + 1))
-            // 100 / n
-            width: 50%
-
-            %ItemCover
-                height: 250px
-                &.-height--half
-                    height: 250px * (1 / 2)
-                &.-height--twothirds
-                    height: 250px * (2 / 3)
-
-        +respond-to-gt($min_width * (3 + 1))
-            width: 33.33333%
-
-            %ItemCover
-                height: 225px
-                &.-height--half
-                    height: 225px * (1 / 2)
-                &.-height--twothirds
-                    height: 225px * (2 / 3)
-
-        +respond-to-gt($min_width * (4 + 1))
-            width: 25%
-
-            %ItemCover
-                height: 200px
-                &.-height--half
-                    height: 200px * (1 / 2)
-                &.-height--twothirds
-                    height: 200px * (2 / 3)
+            position        : absolute
+            top             : 0
+            left            : 0
+            width           : 100%
+            height          : 100%
 
 
-    &.-medium
-        min-width: 300px
-        $min_width: 300px
-
-        %ItemCover
-            height: 275px
-            &.-height--half
-                height: 275px * (1 / 2)
-            &.-height--twothirds
-                height: 275px * (2 / 3)
-
-        +respond-to-gt($min_width * (2 + 1))
-            // 100 / n
-            width: 50%
-
-            %ItemCover
-                height: 400px
-                &.-height--half
-                    height: 400px * (1 / 2)
-                &.-height--twothirds
-                    height: 400px * (2 / 3)
-
-        +respond-to-gt($min_width * (3 + 1))
-            width: 33.33333%
-
-            %ItemCover
-                height: 600px
-                &.-height--half
-                    height: 600px * (1 / 2)
-                &.-height--twothirds
-                    height: 600px * (2 / 3)
-
-
-    &.-large
-        min-width: 400px
-        $min_width: 400px
-
-        %ItemCover
-            height: 400px
-            &.-height--half
-                height: 400px * (1 / 2)
-            &.-height--twothirds
-                height: 400px * (2 / 3)
-
-        +respond-to-gt($min_width * (2 + 1))
-            // 100 / n
-            width: 50%
-
-            %ItemCover
-                height: 600px
-                &.-height--half
-                    height: 600px * (1 / 2)
-                &.-height--twothirds
-                    height: 600px * (2 / 3)
-
-    .H-intrinsic_ratio
-        position: relative
-        height: 0
-        padding-bottom: percentage(1 / $ItemCover--intrinsic_ratio)
-        %ItemCover
-            position: absolute
-            top: 0
-            left: 0
-            width: 100%
-            height: 100%
-
-
-
+// Base module for use by all Item components.
 %_ItemComponent
     +box-sizing(border-box)
 
 
+// A component needed when using the `-intrinsic_ratio` variant of the Item.
+%ItemCoverWrapper
+    @extend %_ItemComponent
+
+
+
 %ItemCover
     @extend %_ItemComponent
-    +background-size(cover)
+    background-size     : cover
     background-repeat   : no-repeat
     position            : relative
     background-position : center
 
-    &.-image_align--top
-        background-position: top center
+    height: $ItemCover--default_height
+    &%-height--half
+        height: $ItemCover--default_height * (1 / 2)
+    &%-height--twothirds
+        height: $ItemCover--default_height * (2 / 3)
 
-    &.-image_align--bottom
-        background-position: bottom center
+    &%-image_align--top
+        background-position-y: top
+
+    &%-image_align--bottom
+        background-position-y: bottom
+
+    &%-image_align--left
+        background-position-x: left
+
+    &%-image_align--right
+        background-position-x: right
+
+
 
 // General grouping element.
 %ItemInfo
     @extend %_ItemComponent
 
-    &.-pinned--bottom_left
+    &%-pinned--bottom
         position    : absolute
         bottom      : 0
+
+    &%-pinned--top
+        position    : absolute
+        top         : 0
+
+    &%-pinned--left
+        position    : absolute
         left        : 0
 
-    &.-centered--horizontal
+    &%-pinned--right
+        position    : absolute
+        right       : 0
+
+    &%-centered--horizontal
         text-align  : center
         margin      : 0 auto
+
+
 
 %ItemSupertitle
     @extend %_ItemComponent
 
+
+
 %ItemTitle
     @extend %_ItemComponent
 
+
+
 %ItemSubtitle
     @extend %_ItemComponent
+
+
 
 %ItemDeck
     @extend %_ItemComponent
 
 
+
+
+
+// Generate the actual selectors for direct usage, instead of @extending.
+
 @if $Formwork--generate_selectors
-    @each $selector in ("", Cover, Info, Supertitle, Title, Subtitle, Deck)
+    @each $selector in ("", CoverWrapper, Cover, Info, Supertitle, Title, Subtitle, Deck)
         .Item#{ $selector }
             @extend %Item#{ $selector }
+
+    .Item
+        &.-intrinsic_ratio
+            @extend %Item%-intrinsic_ratio
+        @each $size in small, medium, large, fifth, fourth, third, half
+            &.-size--#{ $size }
+                @extend %Item%-size--#{ $size }
+
+    .ItemCover
+        &.-image_align--top
+            @extend %ItemCover%-image_align--top
+        &.-image_align--bottom
+            @extend %ItemCover%-image_align--bottom
+        &.-image_align--right
+            @extend %ItemCover%-image_align--right
+        &.-image_align--left
+            @extend %ItemCover%-image_align--left
+
+    .ItemInfo
+        &.-pinned--top
+            @extend %ItemInfo%-pinned--top
+        &.-pinned--bottom
+            @extend %ItemInfo%-pinned--bottom
+        &.-pinned--left
+            @extend %ItemInfo%-pinned--left
+        &.-pinned--right
+            @extend %ItemInfo%-pinned--right
