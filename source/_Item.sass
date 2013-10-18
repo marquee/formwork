@@ -1,13 +1,17 @@
 @import "compass/css3"
 
 @import "./default_config"
-@import "./helpers"
+@import "./respond-to"
 
 @import "./shiny"
 
 
 
-// Item module
+// # Item module
+//
+// An Item is a block of content that generally has a title, cover, subtitle,
+// and “deck” (a description or preview). The common use is as an item in a
+// list of stories.
 //
 // Assumes a markup structure similar to this. The actual components MAY be
 // regrouped as desired, though SHOULD be in the same relative order.
@@ -15,10 +19,10 @@
 // ```html
 // <div class="Item -intrinsic_ratio">
 //     <div class="ItemCoverWrapper">
-//         <div class="ItemCover" style="background-image: url(http://placepuppy.it/800/600/">
+//         <div class="ItemCover" style="background-image: url(http://placepuppy.it/800/600/)">
 //             <div class="ItemInfo -centered--horizontal">
 //                 <div class="ItemSupertitle">Supertitle</div>
-//                 <h1 class="ItemTitle"></h1>
+//                 <h1 class="ItemTitle">Title</h1>
 //             </div>
 //         </div>
 //     </div>
@@ -118,7 +122,105 @@
     @extend %_ItemComponent
 
 
-
+// # ItemCover component
+//
+// An optional component of the Item module that displays a cover image. It
+// uses the `style=""` attribute and the `background-image: url()` rule
+// instead of an `img` in order to control the aspect ratio.
+//
+// The cover MAY contain other components, like ItemSupertitle and ItemTitle,
+// even ItemDeck, grouped in an ItemInfo component. The ItemInfo allows for
+// positioning the interior components as a group.
+//
+// ```html
+// <div class="Item">
+//     <div class="ItemCover" style="background-image: url(http://placepuppy.it/800/600/)">
+//         <div class="ItemInfo">
+//             <div class="ItemSupertitle">Supertitle</div>
+//             <h2 class="ItemTitle">Title</h2>
+//         </div>
+//     </div>
+// </div>
+// ```
+//
+// ## Variants
+//
+//
+// ### `-height--*`
+//
+// The height of the cover is dependent on the size of the Item it is inside. It
+// can be controlled with the `-height--half` and `-height--twothirds` variants,
+// which set the cover to half or twothirds of its usual height.
+//
+// The parent Item MAY have a variant like `-intrinsic_ratio`, which causes the
+// ItemCover to instead scale with a consistent aspect ratio. This variant is on
+// the item since it requires an additional wrapper around the cover, the
+// ItemCoverWrapper component. If this is active, then the `-height--*` variants
+// don’t make much sense and SHOULD NOT be used.
+//
+// #### `-height--half`
+//
+// ```html
+// <div class="Item -size--small">
+//     <div class="ItemCover -height--half" style="background-image: url(http://placepuppy.it/800/600/)">
+//         <div class="ItemInfo">
+//             <div class="ItemSupertitle">Supertitle</div>
+//             <h2 class="ItemTitle">Title</h2>
+//         </div>
+//     </div>
+// </div>
+// ```
+//
+// #### `-height--twothirds`
+//
+// ```html
+// <div class="Item -size--small">
+//     <div class="ItemCover -height--twothirds" style="background-image: url(http://placepuppy.it/800/600/)">
+//         <div class="ItemInfo">
+//             <div class="ItemSupertitle">Supertitle</div>
+//             <h2 class="ItemTitle">Title</h2>
+//         </div>
+//     </div>
+// </div>
+// ```
+//
+// ### `-image_align--*`
+//
+// By default the cover image is positioned in the center of the component,
+// cropping from all sides. The image can be aligned to any of the four edges,
+// or some combination of two adjacent edges.
+//
+// ```html
+// <div class="Item -size--fourth">
+//     <div class="ItemCover -image_align--top" style="background-image: url(http://placepuppy.it/800/600/)">
+//         <div class="ItemInfo">
+//             <div class="ItemSupertitle">Supertitle</div>
+//             <h2 class="ItemTitle">Title, <code>-image_align--top</code></h2>
+//         </div>
+//     </div>
+// </div><div class="Item -size--fourth">
+//     <div class="ItemCover -image_align--right" style="background-image: url(http://placepuppy.it/800/600/)">
+//         <div class="ItemInfo">
+//             <div class="ItemSupertitle">Supertitle</div>
+//             <h2 class="ItemTitle">Title, <code>-image_align--right</code></h2>
+//         </div>
+//     </div>
+// </div><div class="Item -size--fourth">
+//     <div class="ItemCover -image_align--bottom" style="background-image: url(http://placepuppy.it/800/600/)">
+//         <div class="ItemInfo">
+//             <div class="ItemSupertitle">Supertitle</div>
+//             <h2 class="ItemTitle">Title, <code>-image_align--bottom</code></h2>
+//         </div>
+//     </div>
+// </div><div class="Item -size--fourth">
+//     <div class="ItemCover -image_align--left" style="background-image: url(http://placepuppy.it/800/600/)">
+//         <div class="ItemInfo">
+//             <div class="ItemSupertitle">Supertitle</div>
+//             <h2 class="ItemTitle">Title, <code>-image_align--left</code></h2>
+//         </div>
+//     </div>
+// </div>
+// ```
 %ItemCover
     @extend %_ItemComponent
     background-size     : cover
@@ -217,6 +319,9 @@
             @extend %ItemCover%-image_align--right
         &.-image_align--left
             @extend %ItemCover%-image_align--left
+        @each $height in half, twothirds
+            &.-height--#{ $height }
+                @extend %ItemCover%-height--#{ $height }
 
     .ItemInfo
         &.-pinned--top

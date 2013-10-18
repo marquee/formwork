@@ -1,0 +1,23 @@
+{
+  "name": "formwork",
+  "version": "0.2.0",
+  "description": "",
+  "scripts": {
+    "postinstall": "mv ./source/* ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:marquee/formwork.git"
+  },
+  "author": "Alec Perkins <alec@marquee.by>",
+  "license": {
+      "type": "Unlicense",
+      "url": "https://raw.github.com/marquee/formwork/master/LICENSE"
+  },
+  "contributors": [
+    {
+      "name": "Alec Perkins",
+      "email": "alec@marquee.by"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+@import "./default_config"
+
+%Container
+    max-width   : $Container--max_width
+    margin      : 0 auto
+
+    &%-full
+        max-width: none
+
+@if $Formwork--generate_selectors
+    .Container
+        @extend %Container
+        &.-full
+            @extend %Container%-full
