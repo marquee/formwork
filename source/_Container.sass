@@ -6,9 +6,14 @@
 
     &%-full
         max-width: none
+    &%-spaceless
+        font-size: 0
+        > *
+            font-size: 1rem
 
 @if $Formwork--generate_selectors
     .Container
         @extend %Container
-        &.-full
-            @extend %Container%-full
+        @each $variant in full, spaceless
+            &.-#{ $variant }
+                @extend %Container%-#{ $variant }
