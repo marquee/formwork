@@ -1,9 +1,15 @@
-@import "compass/css3"
+$ItemCover--intrinsic_ratio     : 16/9 !default
+$ItemCover--default_height      : 800px !default
 
-@import "./default_config"
-@import "./respond-to"
 
-@import "./shiny"
+// The minimum width of the known-number Item variants.
+$Item--min_width: 170px !default
+
+// Each size is specified as a name, the number of levels it responds to,
+// the minimum width, the lower-bound of the cover height, and the upper-
+// bound of that height. The levels are the maximum number of that size
+// that will be on a row.
+$Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, large 2 400px 400px 600px)
 
 
 
@@ -298,7 +304,7 @@
 
 // Generate the actual selectors for direct usage, instead of @extending.
 
-@if $Formwork--generate_selectors
+@if $formwork--generate_selectors
     @each $selector in ("", CoverWrapper, Cover, Info, Supertitle, Title, Subtitle, Deck)
         .Item#{ $selector }
             @extend %Item#{ $selector }

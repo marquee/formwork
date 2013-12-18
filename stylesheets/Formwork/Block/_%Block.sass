@@ -1,0 +1,70 @@
+
+%Block
+    
+    $_margin: $Block--base_font_size
+
+    +box-sizing(border-box)
+    margin      : 0 auto $_margin
+    display     : block
+    position    : relative
+    font-size   : $Block--base_font_size
+
+
+%BoxBlock
+    +extend(Block)
+    $_margin: $Block--base_font_size
+
+    width: 100%
+    clear: both
+    max-width: $Block--main_column_width
+
+    &.-column_position--inset
+        max-width: $Block--text_column_width
+        &.-position--left
+            padding-left: $Block--body_padding
+        &.-position--right
+            padding-right: $Block--body_padding
+
+    +respond-to-gt-extra_small
+
+        &.-position--left .Block_Content
+            float: left
+            margin-right: $_margin
+
+        &.-position--right .Block_Content
+            float: right
+            margin-left: $_margin
+    
+        &.-size--small
+            &%-position--center,
+            .Block_Content
+                max-width: $Block--main_column_width / 4 - $Block--body_padding
+        &.-size--medium
+            &.-position--center,
+            .Block_Content
+                max-width: $Block--text_column_width
+            &.-position--right,
+            &.-position--left
+                .Block_Content
+                    width: 51%
+                        // Not 50%, which, because of rounding, ends up being
+                        // 1 pixel too narrow, resulting in a blurry image.
+
+        &.-size--large
+            &.-position--left,
+            &.-position--right
+                .Block_Content
+                    width: 100%
+                    max-width: $Block--main_column_width / 4 * 3
+            &.-position--center
+                max-width: none
+                .Block_Content
+                    max-width: none
+
+    .Block_Content
+        width           : 100%
+        float           : none
+        margin-left     : 0
+        margin-right    : 0
+        margin-bottom   : $Block--base_font_size
+        max-width       : none

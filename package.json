@@ -1,13 +1,13 @@
 {
   "name": "formwork",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "",
-  "scripts": {
-    "postinstall": "mv ./source/* ./"
-  },
   "repository": {
     "type": "git",
     "url": "git@github.com:marquee/formwork.git"
+  },
+  "dependencies": {
+    "shiny": "https://github.com/alecperkins/sass-shiny/tarball/develop"
   },
   "author": "Alec Perkins <alec@marquee.by>",
   "license": {

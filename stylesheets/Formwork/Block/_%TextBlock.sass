@@ -1,0 +1,45 @@
+%TextBlock
+    +extend(Block)
+    max-width       : $Block--text_column_width
+    font-size       : $Block--base_font_size
+    line-height     : $Block--line_height
+    padding-left    : $Block--body_padding
+    padding-right   : $Block--body_padding
+    &.-align--left
+        text-align: left
+    &.-align--center
+        text-align: center
+    &.-align--right
+        text-align: right
+    &.-effect--dropcaps
+        &:first-letter
+            float       : left
+            font-size   : 350%
+            height      : 0.7em
+            line-height : 0.85em
+            margin      : 2px 0 -5px
+            padding     : 0 0.1em 0 0
+
+
+    +respond-to-gte($Block--text_column_width)
+        $_offset_padding: $Block--text_column_width / 2
+        &.-column_offset--left,
+        &.-column_offset--right
+            max-width: $Block--text_column_width + $_offset_padding
+        &.-column_offset--left
+            padding-right: $_offset_padding
+        &.-column_offset--right
+            padding-left: $_offset_padding
+
+
+    &%-role--quote
+        clear: both
+
+    &%-role--pre
+        clear: both
+
+    &%-heading_level--1
+        font-size: $Block--heading_size_1
+
+    &%-heading_level--2
+        font-size: $Block--heading_size_2
