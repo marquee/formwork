@@ -1,5 +1,5 @@
-$ItemCover--intrinsic_ratio     : 16/9 !default
-$ItemCover--default_height      : 800px !default
+$Item_Cover--intrinsic_ratio : 16/9 !default
+$Item_Cover--default_height  : 800px !default
 
 
 // The minimum width of the known-number Item variants.
@@ -13,26 +13,26 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
 
 
 
-// # Item module
+// # Item component
 //
 // An Item is a block of content that generally has a title, cover, subtitle,
 // and “deck” (a description or preview). The common use is as an item in a
 // list of stories.
 //
-// Assumes a markup structure similar to this. The actual components MAY be
+// Assumes a markup structure similar to this. The actual subcomponents MAY be
 // regrouped as desired, though SHOULD be in the same relative order.
 //
 // ```html
 // <div class="Item -intrinsic_ratio">
-//     <div class="ItemCoverWrapper">
-//         <div class="ItemCover" style="background-image: url(http://placepuppy.it/800/600/)">
-//             <div class="ItemInfo -centered--horizontal">
+//     <div class="Item_CoverWrapper">
+//         <div class="Item_Cover" style="background-image: url(http://placepuppy.it/800/600/)">
+//             <div class="Item_Info -centered--horizontal">
 //                 <div class="ItemSupertitle">Supertitle</div>
 //                 <h1 class="ItemTitle">Title</h1>
 //             </div>
 //         </div>
 //     </div>
-//     <div class="ItemInfo">
+//     <div class="Item_Info">
 //         <div class="ItemSubtitle">Subtitle</div>
 //         <p class="ItemDeck">
 //             Nulla vitae elit libero, a pharetra augue. Morbi leo risus, porta
@@ -59,12 +59,12 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
             +respond-to-gt($Item--min_width * $val)
                 width: percentage(1 / $val)
 
-                %ItemCover
-                    height: $ItemCover--default_height / $val
+                %Item_Cover
+                    height: $Item_Cover--default_height / $val
                     &%-height--half
-                        height: $ItemCover--default_height / $val * (1 / 2)
+                        height: $Item_Cover--default_height / $val * (1 / 2)
                     &%-height--twothirds
-                        height: $ItemCover--default_height / $val * (2 / 3)
+                        height: $Item_Cover--default_height / $val * (2 / 3)
 
     // Build out the placeholder selectors for the more flexible variants.
     // The covers get variants to control their height as well,
@@ -80,7 +80,7 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
         &%-size--#{ $name }
             min-width: $min_width
 
-            %ItemCover
+            %Item_Cover
                 height: $height_lower
                 &%-height--half
                     height: $height_lower * (1 / 2)
@@ -92,7 +92,7 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
                     width: 100% / $level
 
                     $this_height: $height_lower + ($height_upper - $height_lower) / ($levels - 1)
-                    %ItemCover
+                    %Item_Cover
                         height: $this_height
                         &%-height--half
                             height: $this_height * (1 / 2)
@@ -100,17 +100,17 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
                             height: $this_height * (2 / 3)
 
     // Variant that uses the intrinsic ratio technique to keep the dimensions
-    // of the ItemCover a consistent ratio, specified by the
-    // `$ItemCover--intrinsic_ratio` setting. Requires use of an
-    // `%ItemCoverWrapper` element around the `%ItemCover`.
+    // of the Item_Cover a consistent ratio, specified by the
+    // `$Item_Cover--intrinsic_ratio` setting. Requires use of an
+    // `%Item_CoverWrapper` element around the `%Item_Cover`.
     // 
     // http://alistapart.com/article/creating-intrinsic-ratios-for-video
     &%-intrinsic_ratio
-        %ItemCoverWrapper
+        %Item_CoverWrapper
             position        : relative
             height          : 0
-            padding-bottom  : percentage(1 / $ItemCover--intrinsic_ratio)
-        %ItemCover
+            padding-bottom  : percentage(1 / $Item_Cover--intrinsic_ratio)
+        %Item_Cover
             position        : absolute
             top             : 0
             left            : 0
@@ -118,30 +118,30 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
             height          : 100%
 
 
-// Base module for use by all Item components.
-%_ItemComponent
+// Base subcomponent for use by all Item subcomponents.
+%_Item_Subcomponent
     +box-sizing(border-box)
 
 
-// A component needed when using the `-intrinsic_ratio` variant of the Item.
-%ItemCoverWrapper
-    @extend %_ItemComponent
+// A subcomponent needed when using the `-intrinsic_ratio` variant of the Item.
+%Item_CoverWrapper
+    @extend %_Item_Subcomponent
 
 
-// # ItemCover component
+// # Item_Cover subcomponent
 //
-// An optional component of the Item module that displays a cover image. It
+// An optional subcomponent of the Item component that displays a cover image. It
 // uses the `style=""` attribute and the `background-image: url()` rule
 // instead of an `img` in order to control the aspect ratio.
 //
-// The cover MAY contain other components, like ItemSupertitle and ItemTitle,
-// even ItemDeck, grouped in an ItemInfo component. The ItemInfo allows for
-// positioning the interior components as a group.
+// The cover MAY contain other subcomponents, like ItemSupertitle and ItemTitle,
+// even ItemDeck, grouped in an Item_Info subcomponent. The Item_Info allows for
+// positioning the interior subcomponents as a group.
 //
 // ```html
 // <div class="Item">
-//     <div class="ItemCover" style="background-image: url(http://placepuppy.it/800/600/)">
-//         <div class="ItemInfo">
+//     <div class="Item_Cover" style="background-image: url(http://placepuppy.it/800/600/)">
+//         <div class="Item_Info">
 //             <div class="ItemSupertitle">Supertitle</div>
 //             <h2 class="ItemTitle">Title</h2>
 //         </div>
@@ -159,17 +159,17 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
 // which set the cover to half or twothirds of its usual height.
 //
 // The parent Item MAY have a variant like `-intrinsic_ratio`, which causes the
-// ItemCover to instead scale with a consistent aspect ratio. This variant is on
+// Item_Cover to instead scale with a consistent aspect ratio. This variant is on
 // the item since it requires an additional wrapper around the cover, the
-// ItemCoverWrapper component. If this is active, then the `-height--*` variants
+// Item_CoverWrapper subcomponent. If this is active, then the `-height--*` variants
 // don’t make much sense and SHOULD NOT be used.
 //
 // #### `-height--half`
 //
 // ```html
 // <div class="Item -size--small">
-//     <div class="ItemCover -height--half" style="background-image: url(http://placepuppy.it/800/600/)">
-//         <div class="ItemInfo">
+//     <div class="Item_Cover -height--half" style="background-image: url(http://placepuppy.it/800/600/)">
+//         <div class="Item_Info">
 //             <div class="ItemSupertitle">Supertitle</div>
 //             <h2 class="ItemTitle">Title</h2>
 //         </div>
@@ -181,8 +181,8 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
 //
 // ```html
 // <div class="Item -size--small">
-//     <div class="ItemCover -height--twothirds" style="background-image: url(http://placepuppy.it/800/600/)">
-//         <div class="ItemInfo">
+//     <div class="Item_Cover -height--twothirds" style="background-image: url(http://placepuppy.it/800/600/)">
+//         <div class="Item_Info">
 //             <div class="ItemSupertitle">Supertitle</div>
 //             <h2 class="ItemTitle">Title</h2>
 //         </div>
@@ -192,53 +192,53 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
 //
 // ### `-image_align--*`
 //
-// By default the cover image is positioned in the center of the component,
+// By default the cover image is positioned in the center of the subcomponent,
 // cropping from all sides. The image can be aligned to any of the four edges,
 // or some combination of two adjacent edges.
 //
 // ```html
 // <div class="Item -size--fourth">
-//     <div class="ItemCover -image_align--top" style="background-image: url(http://placepuppy.it/800/600/)">
-//         <div class="ItemInfo">
+//     <div class="Item_Cover -image_align--top" style="background-image: url(http://placepuppy.it/800/600/)">
+//         <div class="Item_Info">
 //             <div class="ItemSupertitle">Supertitle</div>
 //             <h2 class="ItemTitle">Title, <code>-image_align--top</code></h2>
 //         </div>
 //     </div>
 // </div><div class="Item -size--fourth">
-//     <div class="ItemCover -image_align--right" style="background-image: url(http://placepuppy.it/800/600/)">
-//         <div class="ItemInfo">
+//     <div class="Item_Cover -image_align--right" style="background-image: url(http://placepuppy.it/800/600/)">
+//         <div class="Item_Info">
 //             <div class="ItemSupertitle">Supertitle</div>
 //             <h2 class="ItemTitle">Title, <code>-image_align--right</code></h2>
 //         </div>
 //     </div>
 // </div><div class="Item -size--fourth">
-//     <div class="ItemCover -image_align--bottom" style="background-image: url(http://placepuppy.it/800/600/)">
-//         <div class="ItemInfo">
+//     <div class="Item_Cover -image_align--bottom" style="background-image: url(http://placepuppy.it/800/600/)">
+//         <div class="Item_Info">
 //             <div class="ItemSupertitle">Supertitle</div>
 //             <h2 class="ItemTitle">Title, <code>-image_align--bottom</code></h2>
 //         </div>
 //     </div>
 // </div><div class="Item -size--fourth">
-//     <div class="ItemCover -image_align--left" style="background-image: url(http://placepuppy.it/800/600/)">
-//         <div class="ItemInfo">
+//     <div class="Item_Cover -image_align--left" style="background-image: url(http://placepuppy.it/800/600/)">
+//         <div class="Item_Info">
 //             <div class="ItemSupertitle">Supertitle</div>
 //             <h2 class="ItemTitle">Title, <code>-image_align--left</code></h2>
 //         </div>
 //     </div>
 // </div>
 // ```
-%ItemCover
-    @extend %_ItemComponent
+%Item_Cover
+    @extend %_Item_Subcomponent
     background-size     : cover
     background-repeat   : no-repeat
     position            : relative
     background-position : center
 
-    height: $ItemCover--default_height
+    height: $Item_Cover--default_height
     &%-height--half
-        height: $ItemCover--default_height * (1 / 2)
+        height: $Item_Cover--default_height * (1 / 2)
     &%-height--twothirds
-        height: $ItemCover--default_height * (2 / 3)
+        height: $Item_Cover--default_height * (2 / 3)
 
     &%-image_align--top
         background-position-y: top
@@ -255,8 +255,8 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
 
 
 // General grouping element.
-%ItemInfo
-    @extend %_ItemComponent
+%Item_Info
+    @extend %_Item_Subcomponent
 
     &%-pinned--bottom
         position    : absolute
@@ -280,23 +280,23 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
 
 
 
-%ItemSupertitle
-    @extend %_ItemComponent
+%Item_Supertitle
+    @extend %_Item_Subcomponent
 
 
 
-%ItemTitle
-    @extend %_ItemComponent
+%Item_Title
+    @extend %_Item_Subcomponent
 
 
 
-%ItemSubtitle
-    @extend %_ItemComponent
+%Item_Subtitle
+    @extend %_Item_Subcomponent
 
 
 
-%ItemDeck
-    @extend %_ItemComponent
+%Item_Deck
+    @extend %_Item_Subcomponent
 
 
 
@@ -305,9 +305,11 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
 // Generate the actual selectors for direct usage, instead of @extending.
 
 @if $formwork--generate_selectors
-    @each $selector in ("", CoverWrapper, Cover, Info, Supertitle, Title, Subtitle, Deck)
-        .Item#{ $selector }
-            @extend %Item#{ $selector }
+    .Item
+        @extend %Item
+    @each $selector in (CoverWrapper, Cover, Info, Supertitle, Title, Subtitle, Deck)
+        .Item_#{ $selector }
+            @extend %Item_#{ $selector }
 
     .Item
         &.-intrinsic_ratio
@@ -316,25 +318,25 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
             &.-size--#{ $size }
                 @extend %Item%-size--#{ $size }
 
-    .ItemCover
+    .Item_Cover
         &.-image_align--top
-            @extend %ItemCover%-image_align--top
+            @extend %Item_Cover%-image_align--top
         &.-image_align--bottom
-            @extend %ItemCover%-image_align--bottom
+            @extend %Item_Cover%-image_align--bottom
         &.-image_align--right
-            @extend %ItemCover%-image_align--right
+            @extend %Item_Cover%-image_align--right
         &.-image_align--left
-            @extend %ItemCover%-image_align--left
+            @extend %Item_Cover%-image_align--left
         @each $height in half, twothirds
             &.-height--#{ $height }
-                @extend %ItemCover%-height--#{ $height }
+                @extend %Item_Cover%-height--#{ $height }
 
-    .ItemInfo
+    .Item_Info
         &.-pinned--top
-            @extend %ItemInfo%-pinned--top
+            @extend %Item_Info%-pinned--top
         &.-pinned--bottom
-            @extend %ItemInfo%-pinned--bottom
+            @extend %Item_Info%-pinned--bottom
         &.-pinned--left
-            @extend %ItemInfo%-pinned--left
+            @extend %Item_Info%-pinned--left
         &.-pinned--right
-            @extend %ItemInfo%-pinned--right
+            @extend %Item_Info%-pinned--right
