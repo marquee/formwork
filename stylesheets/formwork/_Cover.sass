@@ -1,0 +1,84 @@
+
+$Cover--intrinsic_ratio: 16/9 !default
+$Cover--default_height: 800px !default
+//
+
+    <div class="Cover">
+        <div class="Cover_Image">
+            <div class="Cover_Info">
+            </div>
+        </div>
+    </div>
+
+@mixin Cover--intrinsic_ratio($ratio: $Cover--intrinsic_ratio)
+    padding-bottom: percentage(1 / $ratio)
+
+%Cover
+    +box-sizing(border-box)
+    // Variant that uses the intrinsic ratio technique to keep the dimensions
+    // of the Cover a consistent ratio, specified by the
+    // `$Cover--intrinsic_ratio` setting. Assumes use of a `%Cover_Image`
+    // element internally.
+    // 
+    // http://alistapart.com/article/creating-intrinsic-ratios-for-video
+    &%-intrinsic_ratio
+        position        : relative
+        height          : 0
+        +Cover--intrinsic_ratio()
+        %Cover_Image
+            position        : absolute
+            top             : 0
+            left            : 0
+            width           : 100%
+            height          : 100%
+
+%Cover_Image
+    +box-sizing(border-box)
+    background-size     : cover
+    background-repeat   : no-repeat
+    position            : relative
+    background-position : center
+
+    height: $Cover--default_height
+    &%-height--half
+        height: $Cover--default_height * (1 / 2)
+    &%-height--twothirds
+        height: $Cover--default_height * (2 / 3)
+
+    &%-image_align--top
+        background-position-y: top
+
+    &%-image_align--bottom
+        background-position-y: bottom
+
+    &%-image_align--left
+        background-position-x: left
+
+    &%-image_align--right
+        background-position-x: right
+
+    &%-effect--pinned
+        background-attachment: fixed
+
+%Cover_Info
+    +box-sizing(border-box)
+
+    &%-pinned--bottom
+        position    : absolute
+        bottom      : 0
+
+    &%-pinned--top
+        position    : absolute
+        top         : 0
+
+    &%-pinned--left
+        position    : absolute
+        left        : 0
+
+    &%-pinned--right
+        position    : absolute
+        right       : 0
+
+    &%-centered--horizontal
+        text-align  : center
+        margin      : 0 auto
