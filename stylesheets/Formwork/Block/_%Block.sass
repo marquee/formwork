@@ -13,6 +13,7 @@
 %BoxBlock
     +extend(Block)
     $_margin: $Block--base_font_size
+    $_small_width: $Block--main_column_width / 4 - $Block--body_padding
 
     width: 100%
     clear: both
@@ -20,6 +21,11 @@
 
     &.-column_position--inset
         max-width: $Block--text_column_width
+    &.-column_position--outset.-size--small
+        //+respond-to-gt($Block--text_column_width + 2 * $_small_width)
+            //margin-left: -1 * ($_small_width + $Block--body_padding)
+        .Block_Content
+            width: calc((100% - #{ $Block--text_column_width }) / 2 )
 
     +respond-to-gt-extra_small
 
@@ -34,7 +40,7 @@
         &.-size--small
             &%-position--center,
             .Block_Content
-                max-width: $Block--main_column_width / 4 - $Block--body_padding
+                max-width: $_small_width
         &.-size--medium
             &.-position--center,
             .Block_Content

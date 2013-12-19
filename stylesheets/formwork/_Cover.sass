@@ -1,5 +1,5 @@
 
-$Cover--intrinsic_ratio: 16/9 !default
+$Cover--default_ratio: 16/9 !default
 $Cover--default_height: 800px !default
 //
 
@@ -10,8 +10,22 @@ $Cover--default_height: 800px !default
         </div>
     </div>
 
-@mixin Cover--intrinsic_ratio($ratio: $Cover--intrinsic_ratio)
+@mixin Cover--intrinsic_ratio_content
+    position        : absolute
+    top             : 0
+    left            : 0
+    width           : 100%
+    height          : 100% !important
+
+@mixin Cover--intrinsic_ratio_wrapper($ratio: $Cover--default_ratio)
+    position        : relative
+    height          : 0
+    +Cover--set_ratio($ratio)
+
+@mixin Cover--set_ratio($ratio: $Cover--default_ratio)
     padding-bottom: percentage(1 / $ratio)
+
+
 
 %Cover
     +box-sizing(border-box)
@@ -22,15 +36,9 @@ $Cover--default_height: 800px !default
     // 
     // http://alistapart.com/article/creating-intrinsic-ratios-for-video
     &%-intrinsic_ratio
-        position        : relative
-        height          : 0
-        +Cover--intrinsic_ratio()
-        %Cover_Image
-            position        : absolute
-            top             : 0
-            left            : 0
-            width           : 100%
-            height          : 100%
+        +Cover--intrinsic_ratio_wrapper
+        > div
+            +Cover--intrinsic_ratio_content
 
 %Cover_Image
     +box-sizing(border-box)
@@ -40,6 +48,10 @@ $Cover--default_height: 800px !default
     background-position : center
 
     height: $Cover--default_height
+    &%-height--quarter
+        height: $Cover--default_height * (1 / 4)
+    &%-height--third
+        height: $Cover--default_height * (1 / 3)
     &%-height--half
         height: $Cover--default_height * (1 / 2)
     &%-height--twothirds
@@ -82,3 +94,8 @@ $Cover--default_height: 800px !default
     &%-centered--horizontal
         text-align  : center
         margin      : 0 auto
+
+@if $formwork--generate_selectors
+    +auto-extend(Cover, intrinsic_ratio)
+    +auto-extend(Cover_Image, height half, height third, height twothirds, height quarter, image_align top, image_align right, image_align left, image_align bottom, effect pinned)
+    +auto-extend(Cover_Info, pinned bottom, pinned top, pinned left, pinned right, centered horizontal)

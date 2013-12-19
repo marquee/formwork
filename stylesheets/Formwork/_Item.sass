@@ -43,6 +43,7 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
 // </div>
 // ```
 %Item
+    +extend(Cover)
     +box-sizing(border-box)
     display         : inline-block
     vertical-align  : top
@@ -59,7 +60,10 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
             +respond-to-gt($Item--min_width * $val)
                 width: percentage(1 / $val)
 
-                %Item_Cover
+                &%-intrinsic_ratio
+                    +Cover--intrinsic_ratio($Cover--default_ratio * $val)
+
+                %Item_CoverImage
                     height: $Item_Cover--default_height / $val
                     &%-height--half
                         height: $Item_Cover--default_height / $val * (1 / 2)
@@ -80,7 +84,7 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
         &%-size--#{ $name }
             min-width: $min_width
 
-            %Item_Cover
+            %Item_CoverImage
                 height: $height_lower
                 &%-height--half
                     height: $height_lower * (1 / 2)
@@ -91,8 +95,11 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
                 +respond-to-gt($min_width * ($level + 1))
                     width: 100% / $level
 
+                    &%-intrinsic_ratio
+                        +Cover--intrinsic_ratio($Cover--default_ratio * $level)
+
                     $this_height: $height_lower + ($height_upper - $height_lower) / ($levels - 1)
-                    %Item_Cover
+                    %Item_CoverImage
                         height: $this_height
                         &%-height--half
                             height: $this_height * (1 / 2)
@@ -203,8 +210,8 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
 //     </div>
 // </div>
 // ```
-%Item_Cover
-    +extend(Cover)
+%Item_CoverImage
+    +extend(Cover_Image)
 
 
 // General grouping element.
@@ -259,27 +266,29 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
 
 @if $formwork--generate_selectors
     .Item
-        @extend %Item
-    @each $selector in (Cover, Info, Supertitle, Title, Subtitle, Deck)
+        +extend(Item)
+        &.-intrinsic_ratio
+            +extend-variants(Cover, intrinsic_ratio)
+    @each $selector in (CoverImage, Info, Supertitle, Title, Subtitle, Deck)
         .Item_#{ $selector }
-            @extend %Item_#{ $selector }
+            +extend(Item_#{ $selector })
 
     .Item
         @each $size in small, medium, large, fifth, fourth, third, half
             &.-size--#{ $size }
                 @extend %Item%-size--#{ $size }
+                &.-intrinsic_ratio
+                    @extend %Item%-size--#{ $size }%-intrinsic_ratio
 
-    .Item_Cover
-        &.-intrinsic_ratio
-            +extend(ItemCover, intrinsic_ratio)
+    .Item_CoverImage
         @each $align in top, bottom, left, right
             &.-image_align--#{ $align }
-                +extend(Item_Cover, image_align $align)
-        @each $height in half, twothirds
+                +extend-variants(Item_CoverImage, image_align $align)
+        @each $height in quarter, half, twothirds
             &.-height--#{ $height }
-                +extend(Item_Cover, height $height)
+                +extend-variants(Item_CoverImage, height $height)
 
     .Item_Info
         @each $align in top, bottom, left, right
             &.-pinned--#{ $align }
-                +extend(Item_Info, pinned $align)
+                +extend-variants(Item_Info, pinned $align)
