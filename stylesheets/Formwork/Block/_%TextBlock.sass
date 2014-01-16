@@ -1,3 +1,4 @@
+
 %TextBlock
     +extend(Block)
     max-width       : $Block--text_column_width + 2 * $Block--body_padding
@@ -5,13 +6,13 @@
     line-height     : $Block--line_height
     padding-left    : $Block--body_padding
     padding-right   : $Block--body_padding
-    &.-align--left
+    +state(align, left)
         text-align: left
-    &.-align--center
+    +state(align, center)
         text-align: center
-    &.-align--right
+    +state(align, right)
         text-align: right
-    &.-effect--dropcaps
+    +state(effect, dropcaps)
         &:first-letter
             float       : left
             font-size   : 350%
@@ -23,23 +24,23 @@
 
     +respond-to-gte($Block--text_column_width)
         $_offset_padding: $Block--text_column_width / 2
-        &.-column_offset--left,
-        &.-column_offset--right
+        +state(column_offset, left)
             max-width: $Block--text_column_width + $_offset_padding
-        &.-column_offset--left
+        +state(column_offset, right)
+            max-width: $Block--text_column_width + $_offset_padding
+        +state(column_offset, left)
             padding-right: $_offset_padding
-        &.-column_offset--right
+        +state(column_offset, right)
             padding-left: $_offset_padding
 
-
-    &%-role--quote
+    +state(role, quote)
         clear: both
 
-    &%-role--pre
+    +state(role, pre)
         clear: both
 
-    &%-heading_level--1
+    +state(heading_level, 1)
         font-size: $Block--heading_size_1
 
-    &%-heading_level--2
+    +state(heading_level, 2)
         font-size: $Block--heading_size_2

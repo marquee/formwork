@@ -1,3 +1,5 @@
+// The Block properties use states instead of classes, because they are
+// intended to be used per-block.
 
 %Block
     
@@ -19,46 +21,54 @@
     clear: both
     max-width: $Block--main_column_width
 
-    &.-column_position--inset
+    +state(column_position, inset)
         max-width: $Block--text_column_width
-    &.-column_position--outset.-size--small
-        //+respond-to-gt($Block--text_column_width + 2 * $_small_width)
-            //margin-left: -1 * ($_small_width + $Block--body_padding)
-        .Block_Content
-            width: calc((100% - #{ $Block--text_column_width }) / 2 )
+    +state(column_position, outset)
+        +state(size, small)
+            .Block_Content
+                width: calc((100% - #{ $Block--text_column_width }) / 2 )
 
     +respond-to-gt-extra_small
 
-        &.-position--left .Block_Content
-            float: left
-            margin-right: $_margin
+        +state(position, left)
+            .Block_Content
+                float: left
+                margin-right: $_margin
 
-        &.-position--right .Block_Content
-            float: right
-            margin-left: $_margin
+        +state(position, right)
+            .Block_Content
+                float: right
+                margin-left: $_margin
     
-        &.-size--small
+        +state(size, small)
             &%-position--center,
             .Block_Content
                 max-width: $_small_width
-        &.-size--medium
-            &.-position--center,
+
+        +state(size, medium)
+            +state(position, center)
+                max-width: $Block--text_column_width
             .Block_Content
                 max-width: $Block--text_column_width
-            &.-position--right,
-            &.-position--left
+            +state(position, right)
                 .Block_Content
                     width: 51%
                         // Not 50%, which, because of rounding, ends up being
                         // 1 pixel too narrow, resulting in a blurry image.
+            +state(position, left)
+                .Block_Content
+                    width: 51%
 
-        &.-size--large
-            &.-position--left,
-            &.-position--right
+        +state(size, large)
+            +state(position, left)
                 .Block_Content
                     width: 100%
                     max-width: $Block--main_column_width / 4 * 3
-            &.-position--center
+            +state(position, right)
+                .Block_Content
+                    width: 100%
+                    max-width: $Block--main_column_width / 4 * 3
+            +state(position, center)
                 max-width: none
                 .Block_Content
                     max-width: none
