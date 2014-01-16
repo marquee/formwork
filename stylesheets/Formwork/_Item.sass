@@ -61,7 +61,9 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
                 width: percentage(1 / $val)
 
                 &%-intrinsic_ratio
-                    +Cover--intrinsic_ratio($Cover--default_ratio * $val)
+                    +Cover--intrinsic_ratio_wrapper($Cover--default_ratio * $val)
+                    > div
+                        +Cover--intrinsic_ratio_content
 
                 %Item_CoverImage
                     height: $Item_Cover--default_height / $val
@@ -96,7 +98,9 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
                     width: 100% / $level
 
                     &%-intrinsic_ratio
-                        +Cover--intrinsic_ratio($Cover--default_ratio * $level)
+                        +Cover--intrinsic_ratio_wrapper($Cover--default_ratio * $level)
+                        > div
+                            +Cover--intrinsic_ratio_content
 
                     $this_height: $height_lower + ($height_upper - $height_lower) / ($levels - 1)
                     %Item_CoverImage
@@ -212,6 +216,16 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
 // ```
 %Item_CoverImage
     +extend(Cover_Image)
+    @each $height in quarter, third, half, twothirds
+        &%-height--#{ $height }
+            +extend-variants(Cover_Image, height $height)
+
+    @each $align in top, right, bottom, left
+        &%-image_align--#{ $align }
+            +extend-variants(Cover_Image, image_align $align)
+
+    &%-effect--pinned
+        +extend-variants(Cover_Image, effect pinned)
 
 
 // General grouping element.
