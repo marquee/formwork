@@ -1,11 +1,11 @@
 
 %TextBlock
     +extend(Block)
-    max-width       : $Block--text_column_width + 2 * $Block--body_padding
-    font-size       : $Block--base_font_size
-    line-height     : $Block--line_height
-    padding-left    : $Block--body_padding
-    padding-right   : $Block--body_padding
+    max-width       : $Block-column_width--text + 2 * $Block-body_padding
+    font-size       : $Block-base_font_size
+    line-height     : $Block-line_height
+    padding-left    : $Block-body_padding
+    padding-right   : $Block-body_padding
     +state(align, left)
         text-align: left
     +state(align, center)
@@ -22,12 +22,12 @@
             padding     : 0 0.1em 0 0
 
 
-    +respond-to-gte($Block--text_column_width)
-        $_offset_padding: $Block--text_column_width / 2
+    +respond-to-gte($Block-column_width--text)
+        $_offset_padding: $Block-column_width--text / 2
         +state(column_offset, left)
-            max-width: $Block--text_column_width + $_offset_padding
+            max-width: $Block-column_width--text + $_offset_padding
         +state(column_offset, right)
-            max-width: $Block--text_column_width + $_offset_padding
+            max-width: $Block-column_width--text + $_offset_padding
         +state(column_offset, left)
             padding-right: $_offset_padding
         +state(column_offset, right)
@@ -40,7 +40,7 @@
         clear: both
 
     +state(heading_level, 1)
-        font-size: $Block--heading_size_1
+        font-size: $Block-heading_size--1
 
     +state(heading_level, 2)
-        font-size: $Block--heading_size_2
+        font-size: $Block-heading_size--2

@@ -1,7 +1,7 @@
-$Container--max_width : 1280px !default
+$Container-max_width : 1280px !default
 
 %Container
-    max-width   : $Container--max_width
+    max-width   : $Container-max_width
     margin      : 0 auto
 
     &%-full
@@ -11,7 +11,7 @@ $Container--max_width : 1280px !default
         > *
             font-size: 1rem
 
-@if $formwork--generate_selectors
+@if $formwork-generate_selectors
     .Container
         @extend %Container
         @each $variant in full, spaceless

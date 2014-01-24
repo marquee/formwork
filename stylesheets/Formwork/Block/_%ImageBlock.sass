@@ -2,4 +2,7 @@
     +extend(BoxBlock)
 
 %ImageBlock_Image
-    width: 100%
+    width   : 100%
+    // Without this, the Captions won't end up flush even with no spaces in
+    // the markup.
+    display : block

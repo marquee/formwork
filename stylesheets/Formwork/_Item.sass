@@ -1,16 +1,31 @@
-$Item_Cover--intrinsic_ratio : 16/9 !default
-$Item_Cover--default_height  : 800px !default
+$Item_Cover-intrinsic_ratio : 16/9 !default
+$Item_Cover-default_height  : 800px !default
 
 
 // The minimum width of the known-number Item variants.
-$Item--min_width: 170px !default
+$Item-min_width: 170px !default
 
 // Each size is specified as a name, the number of levels it responds to,
 // the minimum width, the lower-bound of the cover height, and the upper-
 // bound of that height. The levels are the maximum number of that size
 // that will be on a row.
-$Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, large 2 400px 400px 600px)
+$Item-variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, large 2 400px 400px 600px)
 
+// Mixin to set the Item sizing. For use when extending a variant is not an 
+// option, such as inside media queries.
+@mixin Item-size($size)
+    $_scale: 1
+    @if $size == fifth
+        $_scale: 1/5
+    @else if $size == fourth
+        $_scale: 1/4
+    @else if $size == third
+        $_scale: 1/3
+    @else if $size == half
+        $_scale: 1/2
+    @else if $size == twothirds
+        $_scale: 2/3
+    width: percentage($_scale)
 
 
 // # Item component
@@ -53,30 +68,30 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
     // These items will stay the given percentage of the available width until
     // they reach the minimum width specified by `$Item--min_width` at which
     // point they will stack, one per row.
-    @each $size_set in (fifth 5, fourth 4, third 3, half 2)
+    @each $size_set in (fifth 5, fourth 4, third 3, half 2, twothirds 3/2)
         $name: nth($size_set, 1)
         $val: nth($size_set, 2)
         &%-size--#{ $name }
-            +respond-to-gt($Item--min_width * $val)
+            +respond-to-gt($Item-min_width * $val)
                 width: percentage(1 / $val)
 
                 &%-intrinsic_ratio
-                    +Cover--intrinsic_ratio_wrapper($Cover--default_ratio * $val)
+                    +Cover-intrinsic_ratio_wrapper($Cover-default_ratio * $val)
                     > div
-                        +Cover--intrinsic_ratio_content
+                        +Cover-intrinsic_ratio_content
 
                 %Item_CoverImage
-                    height: $Item_Cover--default_height / $val
+                    height: $Item_Cover-default_height / $val
                     &%-height--half
-                        height: $Item_Cover--default_height / $val * (1 / 2)
+                        height: $Item_Cover-default_height / $val * (1 / 2)
                     &%-height--twothirds
-                        height: $Item_Cover--default_height / $val * (2 / 3)
+                        height: $Item_Cover-default_height / $val * (2 / 3)
 
     // Build out the placeholder selectors for the more flexible variants.
     // The covers get variants to control their height as well,
     // `-height--half` and `-height--twothirds` that, as named, set the height
     // to be 1/2 or 2/3 of the normal height.
-    @each $size_set in $Item--variable_sizes
+    @each $size_set in $Item-variable_sizes
         $name           : nth($size_set, 1)
         $levels         : nth($size_set, 2)
         $min_width      : nth($size_set, 3)
@@ -98,9 +113,9 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
                     width: 100% / $level
 
                     &%-intrinsic_ratio
-                        +Cover--intrinsic_ratio_wrapper($Cover--default_ratio * $level)
+                        +Cover-intrinsic_ratio_wrapper($Cover-default_ratio * $level)
                         > div
-                            +Cover--intrinsic_ratio_content
+                            +Cover-intrinsic_ratio_content
 
                     $this_height: $height_lower + ($height_upper - $height_lower) / ($levels - 1)
                     %Item_CoverImage
@@ -278,7 +293,7 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
 
 // Generate the actual selectors for direct usage, instead of @extending.
 
-@if $formwork--generate_selectors
+@if $formwork-generate_selectors
     .Item
         +extend(Item)
         &.-intrinsic_ratio
@@ -288,7 +303,7 @@ $Item--variable_sizes: (small 4 200px 200px 275px, medium 3 300px 275px 600px, l
             +extend(Item_#{ $selector })
 
     .Item
-        @each $size in small, medium, large, fifth, fourth, third, half
+        @each $size in small, medium, large, fifth, fourth, third, half, twothirds
             &.-size--#{ $size }
                 @extend %Item%-size--#{ $size }
                 &.-intrinsic_ratio

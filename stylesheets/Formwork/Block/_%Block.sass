@@ -3,30 +3,30 @@
 
 %Block
     
-    $_margin: $Block--base_font_size
+    $_margin: $Block-base_font_size
 
     +box-sizing(border-box)
     margin      : 0 auto $_margin
     display     : block
     position    : relative
-    font-size   : $Block--base_font_size
+    font-size   : $Block-base_font_size
 
 
 %BoxBlock
     +extend(Block)
-    $_margin: $Block--base_font_size
-    $_small_width: $Block--main_column_width / 4 - $Block--body_padding
+    $_margin: $Block-base_font_size
+    $_small_width: $Block-column_width--main / 4 - $Block-body_padding
 
     width: 100%
     clear: both
-    max-width: $Block--main_column_width
+    max-width: $Block-column_width--main
 
     +state(column_position, inset)
-        max-width: $Block--text_column_width
+        max-width: $Block-column_width--text
     +state(column_position, outset)
         +state(size, small)
             .Block_Content
-                width: calc((100% - #{ $Block--text_column_width }) / 2 )
+                width: calc((100% - #{ $Block-column_width--text }) / 2 )
 
     +respond-to-gt-extra_small
 
@@ -47,9 +47,9 @@
 
         +state(size, medium)
             +state(position, center)
-                max-width: $Block--text_column_width
+                max-width: $Block-column_width--text
             .Block_Content
-                max-width: $Block--text_column_width
+                max-width: $Block-column_width--text
             +state(position, right)
                 .Block_Content
                     width: 51%
@@ -63,11 +63,11 @@
             +state(position, left)
                 .Block_Content
                     width: 100%
-                    max-width: $Block--main_column_width / 4 * 3
+                    max-width: $Block-column_width--main / 4 * 3
             +state(position, right)
                 .Block_Content
                     width: 100%
-                    max-width: $Block--main_column_width / 4 * 3
+                    max-width: $Block-column_width--main / 4 * 3
             +state(position, center)
                 max-width: none
                 .Block_Content
@@ -78,5 +78,5 @@
         float           : none
         margin-left     : 0
         margin-right    : 0
-        margin-bottom   : $Block--base_font_size
+        margin-bottom   : $Block-base_font_size
         max-width       : none
