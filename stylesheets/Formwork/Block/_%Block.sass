@@ -25,55 +25,55 @@
         max-width: $Block-column_width--text
     +state(column_position, outset)
         +state(size, small)
-            .Block_Content
+            ._Content
                 width: calc((100% - #{ $Block-column_width--text }) / 2 )
 
     +respond-to-gt-extra_small
 
         +state(position, left)
-            .Block_Content
+            ._Content
                 float: left
                 margin-right: $_margin
 
         +state(position, right)
-            .Block_Content
+            ._Content
                 float: right
                 margin-left: $_margin
     
         +state(size, small)
             &%-position--center,
-            .Block_Content
+            ._Content
                 max-width: $_small_width
 
         +state(size, medium)
             +state(position, center)
                 max-width: $Block-column_width--text
-            .Block_Content
+            ._Content
                 max-width: $Block-column_width--text
             +state(position, right)
-                .Block_Content
+                ._Content
                     width: 51%
                         // Not 50%, which, because of rounding, ends up being
                         // 1 pixel too narrow, resulting in a blurry image.
             +state(position, left)
-                .Block_Content
+                ._Content
                     width: 51%
 
         +state(size, large)
             +state(position, left)
-                .Block_Content
+                ._Content
                     width: 100%
                     max-width: $Block-column_width--main / 4 * 3
             +state(position, right)
-                .Block_Content
+                ._Content
                     width: 100%
                     max-width: $Block-column_width--main / 4 * 3
             +state(position, center)
                 max-width: none
-                .Block_Content
+                ._Content
                     max-width: none
 
-    .Block_Content
+    ._Content
         width           : 100%
         float           : none
         margin-left     : 0
